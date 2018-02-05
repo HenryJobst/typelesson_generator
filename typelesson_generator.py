@@ -14,7 +14,7 @@ parser.add_argument('--max_word_len', help='maximum word length', type=int, defa
 
 args = parser.parse_args()
 
-#print(args)
+print(args)
 
 letters = list(args.letters)
 
@@ -27,17 +27,24 @@ def get_words():
     global letters
 
     words_local = []
+
     for line in open(args.dictionary):
+
         stripped_line = line.strip()
+
         if len(stripped_line) < args.min_word_len:
             continue
+
         if len(stripped_line) > args.max_word_len:
             continue
+
         is_ok = True
+
         for ch in stripped_line:
             if ch not in letters:
                 is_ok = False
                 break
+
         if not is_ok:
             continue
 
@@ -80,6 +87,9 @@ def add_word(word_local):
 
 print('')
 
+if args.mode == 'words':
+    words = get_words()
+
 while True:
     if args.mode == 'letters':
         for word_length in range(args.min_word_len,
@@ -96,7 +106,6 @@ while True:
             break
 
     elif args.mode == 'words':
-        words = get_words()
         handle_word_gap()
         idx = randint(0, len(words) - 1)
         word = words[idx]
