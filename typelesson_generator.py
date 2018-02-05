@@ -1,97 +1,108 @@
+import argparse
 from random import randint, shuffle
 
-letters = ['i','t','e','r','a','n','h','s','u','d','o','v','ä','b']
-#letters = ['ä','b']
-mode = 1
-lowercase = 1
-maxchar = 600
-maxlinechar = 55
-minblocksize = 2
-maxblocksize = 4
-minwordlen = 2
-maxwordlen = 6
+parser = argparse.ArgumentParser(description='Type lesson generator.')
+parser.add_argument('letters')
+parser.add_argument('--version', action='version', version='%(prog)s 0.1')
+parser.add_argument('-m', '--mode', choices=['letters', 'words'], default='words',
+                    help='generation mode, default: words')
+parser.add_argument('-d', '--dictionary', help='filename for a dictionary file', default='/usr/share/dict/ngerman')
+parser.add_argument('--max_chars', help='target char length', type=int, default=600)
+parser.add_argument('--max_line_chars', help='target line char length', type=int, default=55)
+parser.add_argument('--min_word_len', help='minimum word length', type=int, default=3)
+parser.add_argument('--max_word_len', help='maximum word length', type=int, default=6)
 
-linelen = 0
-charlen = 0
+args = parser.parse_args()
 
-def words():
-    global minwordlen
-    global maxwordlen
+#print(args)
+
+letters = list(args.letters)
+
+line_char_count = 0
+char_count = 0
+
+
+def get_words():
+    global args
     global letters
-    
-    words = []
-    for line in open('/usr/share/dict/ngerman'):
-        lcline = line.strip()
-        if len(lcline) < minwordlen:
+
+    words_local = []
+    for line in open(args.dictionary):
+        stripped_line = line.strip()
+        if len(stripped_line) < args.min_word_len:
             continue
-        if len(lcline) > maxwordlen:
+        if len(stripped_line) > args.max_word_len:
             continue
-        isok = True
-        for ch in lcline:
+        is_ok = True
+        for ch in stripped_line:
             if ch not in letters:
-                isok = False
+                is_ok = False
                 break
-        if not isok:
+        if not is_ok:
             continue
 
-        if lowercase:
-            words.append(lcline)
-        else:
-            words.append(line.strip())
+        words_local.append(stripped_line)
 
-    shuffle(words)
-    return words
+    shuffle(words_local)
+    return words_local
 
-def handleGap():
-    global linelen
-    global charlen
-    
-    if linelen > maxlinechar:
-        linelen = 0
+
+def handle_word_gap():
+    global line_char_count
+    global char_count
+
+    if line_char_count > args.max_line_chars:
+        line_char_count = 0
         print('')
-    elif linelen > 0:
-        linelen += 1
-        charlen += 1
+    elif line_char_count > 0:
+        line_char_count += 1
+        char_count += 1
         print(' ', end='')
 
-def handleEnd():
-    if charlen > maxchar:
+
+def handle_end_of_line():
+    if char_count > args.max_chars:
         print('')
         return True
     return False
 
-def addBlock(block):
-    global linelen
-    global charlen
-    
-    blocksize = len(block)
-    
-    print(block, end='')
 
-    linelen += blocksize
-    charlen += blocksize
-        
+def add_word(word_local):
+    global line_char_count
+    global char_count
+
+    length = len(word_local)
+
+    print(word_local, end='')
+
+    line_char_count += length
+    char_count += length
+
+print('')
+
 while True:
-    if mode == 0:
-        for blocksize in range(minblocksize, (minblocksize + randint(0,maxblocksize-minblocksize+1))):
-            block = ''
-            for idx in range(blocksize):
-                letteridx = randint(0, len(letters) - 1)
-                #print('letteridx:', letteridx)
-                block += letters[letteridx]
+    if args.mode == 'letters':
+        for word_length in range(args.min_word_len,
+                                 (args.min_word_len + randint(0, args.max_word_len - args.min_word_len + 1))):
+            word = ''
+            for idx in range(word_length):
+                letter_index = randint(0, len(letters) - 1)
+                word += letters[letter_index]
 
-            handleGap()
-            addBlock(block)
-            
-        if handleEnd():
-            break
-        
-    elif mode == 1:
-        mywords = words()        
-        handleGap()
-        idx = randint(0, len(mywords) - 1)
-        block = mywords[idx]
-        addBlock(block)
+            handle_word_gap()
+            add_word(word)
 
-        if handleEnd():
+        if handle_end_of_line():
             break
+
+    elif args.mode == 'words':
+        words = get_words()
+        handle_word_gap()
+        idx = randint(0, len(words) - 1)
+        word = words[idx]
+        add_word(word)
+
+        if handle_end_of_line():
+            break
+
+print('')
