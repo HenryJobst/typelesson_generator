@@ -9,7 +9,7 @@ parser.add_argument('-m', '--mode', choices=['letters', 'words'], default='words
                     help='generation mode, default: words')
 parser.add_argument('-d', '--dictionary', help='filename for a dictionary file', default='/usr/share/dict/ngerman')
 parser.add_argument('--max_chars', help='target char length', type=int, default=600)
-parser.add_argument('--max_line_chars', help='target line char length', type=int, default=55)
+parser.add_argument('--max_line_chars', help='target line char length', type=int, default=50)
 parser.add_argument('--min_word_len', help='minimum word length', type=int, default=3)
 parser.add_argument('--max_word_len', help='maximum word length', type=int, default=6)
 
@@ -29,7 +29,7 @@ else:
 
 line_char_count = 0
 char_count = 0
-
+word_count = 0
 
 def get_words():
     global args
@@ -93,6 +93,7 @@ def handle_end_of_line():
 def add_word(word_local):
     global line_char_count
     global char_count
+    global word_count
 
     length = len(word_local)
 
@@ -100,6 +101,7 @@ def add_word(word_local):
 
     line_char_count += length
     char_count += length
+    word_count += 1
 
 print('')
 
@@ -132,3 +134,5 @@ while True:
             break
 
 print('')
+print('Chars:', char_count)
+print('Words:', word_count)
