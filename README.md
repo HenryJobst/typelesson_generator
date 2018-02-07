@@ -8,20 +8,23 @@ The other mode is choosing words of a given dictionary with only the given lette
 ## Usage
 
 ```
-usage: typelesson_generator.py [-h] [--version] [-m {letters,words}]
-                               [-d DICTIONARY] [--max_chars MAX_CHARS]
+usage: typelesson_generator.py [-h] [-e EMPHASIS_LETTERS] [--version]
+                               [-m {letters,words}] [-d DICTIONARY]
+                               [--max_chars MAX_CHARS]
                                [--max_line_chars MAX_LINE_CHARS]
                                [--min_word_len MIN_WORD_LEN]
                                [--max_word_len MAX_WORD_LEN]
                                letters
 
-Type lesson generator.
+Typewriting lesson generator.
 
 positional arguments:
-  letters
+  letters               no other letters, than this
 
 optional arguments:
   -h, --help            show this help message and exit
+  -e EMPHASIS_LETTERS, --emphasis_letters EMPHASIS_LETTERS
+                        letters in every word
   --version             show program's version number and exit
   -m {letters,words}, --mode {letters,words}
                         generation mode, default: words
