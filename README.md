@@ -80,6 +80,19 @@ sannt artet indes erriet ehrtet rares hisst traf untief inne
 erstes dein niste andres
 ```
 
+while:
+
+`python typelesson_generator.py -d ./dict/german/top30.txt abcdefghijklmnopqrstuvwxyz --max_chars=1000 --max_line_chars=200`
+
+will produce:
+
+```
+und die dem eine auch auf ich sie auf nach des das nicht dass mit die sie von mit ist ich nach dass ist wie auch nicht sich auch als auch wie von mit eine nicht des wie die die die wie der der und auch
+der mit den ist nach und eine des mit als ich von die wie die ist die das nicht die eine der von als auch nach von den von und des mit ich das wie der des die eine auch des ich mit dass und das nach dass
+wie sie und des eine ich und dass eine ich der den wie sie auf der ist wie sich nach dass von die und nach den wie sie ist ich sich und dem das sie der und mit nach auf das dass dass sie dass der die nicht
+das ich als des wie nach der sie als des ich das ein ist ich nicht auf das ich dass als wie die nach der eine des von von von und als ein des nicht eine nach sich mit sich als eine sich nach sie mit ein
+von des dass als dem als eine das als dem des sich mit nach der ein nicht wie sie das sie die dem dass ich das der als ich dass ich dem mit nach ich das als ein nicht von sich auf dass dem auch
+```
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.txt file for details
